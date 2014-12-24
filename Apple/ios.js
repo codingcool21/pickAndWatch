@@ -11,12 +11,19 @@ general.sendVideoID = function () {
     var v = $("#input_box").val();
     var o = {};
     o["video_id"] = v;
-    o["play"] = true;
+    o["play"] = false;
     general.firebaseRoot.update(o, function (error) {
         if (error) {
             alert("Error: " + error);
         } else {
-            return;
+            o["play"] = true;
+            general.firebaseRoot.child("play").update(o.play, function (error) {
+                if (error) {
+                    alert("Error: " + error);
+                } else {
+                    return;
+                }
+            })
         }
     });
 }
