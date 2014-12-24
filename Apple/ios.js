@@ -31,11 +31,11 @@ $(function () {
     // Set up an enter handler for the textbox
     // When the enter button is pressed, set the
     // value of the textbox to a value under the main Firebase
-    $("#button_submit").click(general.sendTestData);
+    $("#button_submit").click(general.sendVideoID);
     $("#input_box").keyup(function (e) {
         e.which = e.which || e.keyCode;
         if (e.which == 13) {
-            general.sendTestData();
+            general.sendVideoID();
         }
     });
 });
