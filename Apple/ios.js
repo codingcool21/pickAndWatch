@@ -7,17 +7,18 @@ general.firebaseRoot = new Firebase("https://pickandwatch.firebaseio.com/");
 // Create a child reference to the matchnum area
 general.firebaseMatchNumRef = general.firebaseRoot.child("matchnum");
 
-general.sendTestData = function() {
+general.sendVideoID = function () {
     var v = $("#input_box").val();
-            var o = {};
-            o["testvalue"] = v;
-            general.firebaseRoot.update(o, function (error) {
-                if (error) {
-                    alert("Error: " + error);
-                } else {
-                    return;
-                }
-            });
+    var o = {};
+    o["video_id"] = v;
+    o["play"] = true;
+    general.firebaseRoot.update(o, function (error) {
+        if (error) {
+            alert("Error: " + error);
+        } else {
+            return;
+        }
+    });
 }
 $(function () {
     // Set up an enter handler for the textbox
