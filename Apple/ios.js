@@ -16,8 +16,9 @@ general.sendVideoID = function () {
         if (error) {
             alert("Error: " + error);
         } else {
-            o["play"] = true;
-            general.firebaseRoot.child("play").update(o.play, function (error) {
+            var u = {};
+            u["play"] = true;
+            general.firebaseRoot.update(u, function (error) {
                 if (error) {
                     alert("Error: " + error);
                 } else {
