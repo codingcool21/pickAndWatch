@@ -3,13 +3,14 @@
 }
 #input_box {
     width: 175px;
-    display: block;
+    display: inline-block;
     border: 2px solid black;
     position: relative;
-    left: 87.5px;
+    left: 2%;
     font-size: 18px;
     height: 40px;
-
+    margin-top: 1pc;
+    padding: 9px;
 }
 .form-group {
     position: absolute;
@@ -17,9 +18,10 @@
     text-align: center;
     width: 350px
 }
-span {
-    font-size: 19px;
-    color: yellow;
+.glyphicon-span {
+    font-size: 29px;
+    color: red;
+    display: inline-block;
 }
 #button_submit {
     position: relative;

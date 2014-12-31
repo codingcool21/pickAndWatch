@@ -1,0 +1,121 @@
+<style>
+    .search-result {
+        display: inline-block;
+        position: relative;
+        margin: 9px;
+        border: 2px solid black;
+        width: auto;
+        height: auto;
+        text-align: center;
+        background-color: #d9c9c9;
+    }
+    .video-label {
+        top: 14px;
+        position: relative;
+        font-size: 18px;
+        width: auto;
+        height: 7%;
+        /*margin: 38px;*/
+        margin-bottom: -15px;
+    }
+    .video-image {
+        width: 85%;
+        margin: 8%;
+        display: block;
+        position: relative;
+        top: 0%;
+        border: 1px dashed black;
+    }
+    #search-button {
+        position: relative;
+        margin: 9px;
+        left: 18px;
+        top: 9px;
+        padding: 4px;
+        padding-right: 6px;
+        background-color: white;
+    }
+    #result_view {
+        width: 100%;
+        margin-left: 2%;
+    }
+</style>
+<script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+<input type="text" id="input_box" style="display: none;" placeholder="Most Popular" required/>
+<button class="glyphicon glyphicon-search glyphicon-span" id="search-button" disabled onclick="youtubeSearch()"></button>
+<span style="display: block;">&nbsp;</span>
+<div style="height: 100%; width: 25px; position: fixed; margin-right: 12%; display: block;">&nbsp;</div>
+<div id="result_view">
+    <div class="search-result">
+        <label class="video-label">Big Buck Bunny</label>
+        <img class="video-image" src="http://img.youtube.com/vi/YE7VzlLtp-4/mqdefault.jpg" />
+    </div>
+    <div class="search-result">
+        <label class="video-label">Clash of Clans: Hog Rider 2.0</label>
+        <img class="video-image" src="http://img.youtube.com/vi/sbQQKI1Fwo4/mqdefault.jpg" />
+    </div>
+</div>
+<script>
+    var searchResults = {};
+
+    function SearchResult() {
+        //return searchResults;
+        this.setVideoID = function (video_id) {
+            this.VideoID = video_id;
+        }
+        this.setVideoName = function (video_name) {
+            this.VideoName = video_name;
+        }
+        this.setImage = function (image_url) {
+            this.ImageURL = image_url;
+        }
+        this.objectAsHTML = function () {
+            var htmlstring = '<div class="search-result"><label class="video-label">' + this.VideoName + '</label><img width=190 class="video-image" src="' + this.ImageURL + '" /></div>';
+            return htmlstring;
+        }
+    }
+
+    function googleApiClientReady() {
+        // Save the API Key
+        var key = "AIzaSyAh5kok5V9gguUTR9DKU9ew2VDPFp_QlKM";
+        // Set the Google API Client with an API key
+        gapi.client.setApiKey(key);
+        // Load the Javascript API (v3)
+        gapi.client.load("youtube", "v3").then(handleAPILoaded(), function (e) {
+            alert("Error: " + e);
+            location.reload();
+        });
+    }
+
+    function handleAPILoaded() {
+        $("#input_box").show();
+        $("#search-button").attr("disabled", false);
+    }
+
+    function youtubeSearch() {
+        var q = $('#input_box').val();
+        var request = gapi.client.youtube.search.list({
+            q: q,
+            part: 'snippet',
+            maxResults: 50
+        });
+        $("#result_view").html("&nbsp;");
+        request.execute(function (response) {
+            //$('<p>' + JSON.stringify(response) + '</p>').appendTo("body");
+            window.youtubeApiResultObject = response;
+            for (var i = 0; i < response.items.length; i++) {
+                if (response.items[i].kind == "youtube#searchResult") {
+                    searchResults["video_" + i] = new SearchResult();
+                    searchResults["video_" + i].setVideoID(response.items[i].id.videoId);
+                    searchResults["video_" + i].setVideoName(response.items[i].snippet.title.substring(0, 36));
+                    searchResults["video_" + i].setImage(response.items[i].snippet.thumbnails.medium.url);
+                    $(searchResults["video_" + i].objectAsHTML()).appendTo("#result_view");
+                    //$().appendTo("body");
+                } else {
+
+                }
+            }
+        });
+        window.result = request;
+    }
+</script>
