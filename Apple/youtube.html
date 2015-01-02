@@ -2,12 +2,14 @@
     .search-result {
         display: inline-block;
         position: relative;
-        margin: 9px;
+        margin: 25px;
         border: 2px solid black;
-        width: auto;
+        width: 285px;
         height: auto;
         text-align: center;
         background-color: #d9c9c9;
+        margin-left: 25px;
+        clear: both;
     }
     .video-label {
         top: 14px;
@@ -36,8 +38,15 @@
         background-color: white;
     }
     #result_view {
-        width: 100%;
-        margin-left: 2%;
+        width: 90%;
+        margin-left: 0.2%;
+    }
+    .btndiv {
+        width: 50px;
+        display: inline-block;
+        position: relative;
+        margin: 10px;
+        padding: 7px;
     }
 </style>
 <script src="//apis.google.com/js/client.js?onload=googleApiClientReady"></script>
@@ -49,15 +58,17 @@
     <div class="search-result">
         <label class="video-label">Big Buck Bunny</label>
         <img class="video-image" src="http://img.youtube.com/vi/YE7VzlLtp-4/mqdefault.jpg" />
+       <button class="btndiv btn btn-primary" data-video-id="YE7VzlLtp-4" onclick="sendVideo(this)">Play</button>
     </div>
     <div class="search-result">
         <label class="video-label">Clash of Clans: Hog Rider 2.0</label>
         <img class="video-image" src="http://img.youtube.com/vi/sbQQKI1Fwo4/mqdefault.jpg" />
+        <button class="btndiv btn btn-primary" data-video-id="sbQQKI1Fwo4" onclick="sendVideo(this)">Play</button>
     </div>
 </div>
 <script>
     var searchResults = {};
-
+    //alert($("#result_view").innerWidth()+"px");
     function SearchResult() {
         //return searchResults;
         this.setVideoID = function (video_id) {
@@ -70,7 +81,7 @@
             this.ImageURL = image_url;
         }
         this.objectAsHTML = function () {
-            var htmlstring = '<div class="search-result"><label class="video-label">' + this.VideoName + '</label><img width=190 class="video-image" src="' + this.ImageURL + '" /></div>';
+            var htmlstring = '<div class="search-result"><label class="video-label">' + this.VideoName + '</label><img width=190 class="video-image" src="' + this.ImageURL + '" /><button class="btndiv btn btn-primary" data-video-id="' + this.VideoID + '" onclick="sendVideo(this)">Play</button></div>';
             return htmlstring;
         }
     }
@@ -117,5 +128,10 @@
             }
         });
         window.result = request;
+    }
+    general.centerElementOnPage("#result_view", $("#result_view").innerWidth(), "px", "left");
+    function sendVideo(button) {
+        //alert($(button).attr("data-video-id"));
+        general.sendVideoID($(button).attr("data-video-id"));
     }
 </script>
